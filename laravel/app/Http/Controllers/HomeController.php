@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Auth;
+use App\Student;
 
 class HomeController extends Controller
 {
@@ -22,7 +24,14 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        return view('home');
+    {   
+        if (Auth::user()->id==3) {
+            $students = Student::all()->toArray();
+        }else{
+            $students = Student::all()->where('userId', '=', Auth::user()->id)->toArray();
+        }
+        
+        $student = null;
+        return view('home',compact('students','student'));
     }
 }
